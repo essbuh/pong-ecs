@@ -73,7 +73,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="GameState.cpp" />
+    <ClCompile Include="GameStateManager.cpp" />
+    <ClCompile Include="PongGame.cpp" />
     <ClCompile Include="main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="GameStateManager.h" />
+    <ClInclude Include="PongGame.h" />
+    <ClInclude Include="GameState.h" />
+    <ClInclude Include="IGame.h" />
+    <ClInclude Include="IGameStateManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

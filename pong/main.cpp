@@ -7,27 +7,12 @@
 #include <stdio.h>
 #include <time.h>
 
-static GLFWwindow *s_Window = NULL;
-const int TICKS_PER_SECOND = 25;
-const int SKIP_TICKS = 1000 / TICKS_PER_SECOND;
-const int MAX_FRAME_SKIP = 5;
-const int BALL_WIDTH = 10;
+#include "PongGame.h"
 
-typedef struct state_s {
-
-	float x;
-	float y;
-	float dx;
-	float dy;
-
-	state_s() {
-		x = 0.f;
-		y = 0.f;
-		dx = 0.f;
-		dy = 0.f;
-	}
-
-} state_s;
+GLFWwindow *s_Window = NULL;
+int BALL_WIDTH = 10;
+int WINDOW_WIDTH = 1600;
+int WINDOW_HEIGHT = 900;
 
 static void error_callback(int error, const char *description)
 {
@@ -40,98 +25,41 @@ static void key_callback(GLFWwindow *window, int key, int scancode, int action, 
 		glfwSetWindowShouldClose(window, GL_TRUE);
 }
 
+static void window_size_callback(GLFWwindow* window, int width, int height)
+{
+	WINDOW_WIDTH = width;
+	WINDOW_HEIGHT = height;
+
+	glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	glOrtho(0, WINDOW_WIDTH, 0, WINDOW_HEIGHT, 1.f, -1.f);
+}
+
 bool Init(void)
 {
 	glfwSetErrorCallback(error_callback);
 
 	if (!glfwInit()) return false;
 
-	s_Window = glfwCreateWindow(640, 480, "Pong", NULL, NULL);
+	s_Window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Pong", NULL, NULL);
 	if (!s_Window)
 	{
 		glfwTerminate();
 		return false;
 	}
 
+	glfwSetWindowSizeCallback(s_Window, window_size_callback);
 	glfwMakeContextCurrent(s_Window);
 	glfwSetKeyCallback(s_Window, key_callback);
 
-	glfwSwapInterval(0);
+	// Call once now for initial display
+	window_size_callback(s_Window, WINDOW_WIDTH, WINDOW_HEIGHT);
 
 	return true;
 }
 
-void Update(state_s &state)
-{
-	state.x += state.dx;
-	state.y += state.dy;
-
-	int width, height;
-	glfwGetFramebufferSize(s_Window, &width, &height);
-
-	if (state.x < 0)
-	{
-		state.x = 0;
-		state.dx = -state.dx;
-	}
-	else if ((state.x + BALL_WIDTH) >= width)
-	{
-		state.x = width - BALL_WIDTH;
-		state.dx = -state.dx;
-	}
-
-	if (state.y < 0)
-	{
-		state.y = 0;
-		state.dy = -state.dy;
-	}
-	else if ((state.y + BALL_WIDTH) >= height)
-	{
-		state.y = height - BALL_WIDTH;
-		state.dy = -state.dy;
-	}
-}
-
-void Render(const state_s &state)
-{
-	float ratio;
-	int width, height;
-
-	glfwGetFramebufferSize(s_Window, &width, &height);
-	ratio = width / (float) height;
-
-	glViewport(0, 0, width, height);
-	glClear(GL_COLOR_BUFFER_BIT);
-
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	glOrtho(0, 640.f, 0, 480.f, 1.f, -1.f);
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-	glTranslatef(state.x, state.y, 0.f);
-
-	glBegin(GL_TRIANGLE_STRIP);
-	glColor3f(1.f, 1.f, 1.f);
-	glVertex3f(0.f, 0.f, 0.f);
-	glVertex3f(BALL_WIDTH, 0.f, 0.f);
-	glVertex3f(BALL_WIDTH, BALL_WIDTH, 0.f);
-	glVertex3f(0.f, BALL_WIDTH, 0.f);
-	glVertex3f(0.f, 0.f, 0.f);
-	glEnd();
-
-	glfwSwapBuffers(s_Window);
-	glfwPollEvents();
-}
-
-const state_s InterpolateState(const state_s &previous, const state_s &current, double interpolation)
-{
-	state_s state;
-	state.x = current.x * interpolation + previous.x * (1.0 - interpolation);
-	state.y = current.y * interpolation + previous.y * (1.0 - interpolation);
-	return state;
-}
-
-double time()
+float time()
 {
 	static __int64 start = 0;
 	static __int64 frequency = 0;
@@ -145,7 +73,7 @@ double time()
 
 	__int64 counter = 0;
 	QueryPerformanceCounter((LARGE_INTEGER*) &counter);
-	return (double) ((counter - start) / double(frequency));
+	return (float) ((counter - start) / double(frequency));
 }
 
 int main(void)
@@ -155,28 +83,23 @@ int main(void)
 		exit(EXIT_FAILURE);
 	}
 
-	double currentTime = 0.0f;
-	double accumulator = 0.0f;
-
-	const double dt = 0.01;
-	double t = 0.0;
-	
-	state_s previous;
-	state_s current;
-	int frames = 0;
-
 	srand((unsigned) time(0));
-	do
-	{
-		current.dx = 2.f * (-1.f + (float) rand() / ((float) RAND_MAX / (2.f)));
-		current.dy = 2.f * (-1.f + (float) rand() / ((float) RAND_MAX / (2.f)));
-	} while (current.dx == 0.f && current.dy == 0.f);
+
+	IGame *game = new PongGame();
+	game->Init();
+
+	float currentTime = 0.0f;
+	float accumulator = 0.0f;
+
+	const float dt = 0.01f;
+	float t = 0.0f;
+	int frames = 0;
 
 	bool running = true;
 	while (running)
 	{
-		const double newTime = time();
-		double deltaTime = newTime - currentTime;
+		const float newTime = time();
+		float deltaTime = newTime - currentTime;
 		currentTime = newTime;
 
 		if (deltaTime > 0.25f)
@@ -187,17 +110,18 @@ int main(void)
 		while (accumulator >= dt)
 		{
 			accumulator -= dt;
-			previous = current;
-			Update(current);
+			game->Update();
 			t += dt;
 		}
 
-		const state_s state = InterpolateState(previous, current, accumulator / dt);
-		Render(state);
+		game->Render( accumulator / dt );
+		glfwPollEvents();
 
 		++frames;
 		running = running && !glfwWindowShouldClose(s_Window);
 	}
+
+	game->Shutdown();
 
 	glfwDestroyWindow(s_Window);
 	glfwTerminate();

@@ -18,5 +18,31 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="PongGame.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GameStateManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GameState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="IGame.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IGameStateManager.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameState.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PongGame.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameStateManager.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
