@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -11,18 +11,18 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{5DD7BF52-1409-4CB9-B6FF-075D46348597}</ProjectGuid>
-    <RootNamespace>pong</RootNamespace>
+    <ProjectGuid>{CCC7BFD3-C885-42B0-9E6E-BB3B9165C615}</ProjectGuid>
+    <RootNamespace>coment</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v110</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v110</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -39,12 +39,10 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>.\;..\coment\include;c:\work\OpenGL\glee;C:\Work\OpenGL\glfw-3.0.1.bin.WIN32\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Work\OpenGL\glee;C:\Work\OpenGL\glfw-3.0.1.bin.WIN32\lib-msvc110;..\Debug;$(LibraryPath)</LibraryPath>
+    <IncludePath>include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>.\;..\coment\include;c:\work\OpenGL\glee;C:\Work\OpenGL\glfw-3.0.1.bin.WIN32\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Work\OpenGL\glee;C:\Work\OpenGL\glfw-3.0.1.bin.WIN32\lib-msvc110;..\Release;$(LibraryPath)</LibraryPath>
+    <IncludePath>include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -54,7 +52,6 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>GLee.lib;glfw3.lib;opengl32.lib;glu32.lib;coment.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -69,32 +66,52 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>GLee.lib;glfw3.lib;opengl32.lib;glu32.lib;coment.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <SubSystem>NotSet</SubSystem>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="PongGame.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="Systems\CollisionSystem.cpp" />
-    <ClCompile Include="Systems\MovementSystem.cpp" />
-    <ClCompile Include="Systems\PositionStorageSystem.cpp" />
-    <ClCompile Include="Systems\RenderingSystem.cpp" />
+    <ClInclude Include="include\coment\Component.h" />
+    <ClInclude Include="include\coment\Entity.h" />
+    <ClInclude Include="include\coment\EntityId.h" />
+    <ClInclude Include="include\coment\EntityInfo.h" />
+    <ClInclude Include="include\coment\exceptions\BitcountOutOfRange.h" />
+    <ClInclude Include="include\coment\exceptions\BitIndexOutOfBounds.h" />
+    <ClInclude Include="include\coment\exceptions\CompMapUnregistered.h" />
+    <ClInclude Include="include\coment\exceptions\DeadEntity.h" />
+    <ClInclude Include="include\coment\exceptions\IndexOutOfBounds.h" />
+    <ClInclude Include="include\coment\exceptions\NotImplemented.h" />
+    <ClInclude Include="include\coment\exceptions\UninitialisedEntity.h" />
+    <ClInclude Include="include\coment\managers\ComponentManager.h" />
+    <ClInclude Include="include\coment\managers\ComponentTypeManager.h" />
+    <ClInclude Include="include\coment\managers\EntityManager.h" />
+    <ClInclude Include="include\coment\managers\GroupManager.h" />
+    <ClInclude Include="include\coment\managers\Manager.h" />
+    <ClInclude Include="include\coment\managers\ManagerManager.h" />
+    <ClInclude Include="include\coment\managers\SystemManager.h" />
+    <ClInclude Include="include\coment\managers\TagManager.h" />
+    <ClInclude Include="include\coment\managers\VariableManager.h" />
+    <ClInclude Include="include\coment\scenes\Scene.h" />
+    <ClInclude Include="include\coment\systems\EntityProcessingSystem.h" />
+    <ClInclude Include="include\coment\systems\EntitySystem.h" />
+    <ClInclude Include="include\coment\utils\BitMask.h" />
+    <ClInclude Include="include\coment\utils\Bitset.h" />
+    <ClInclude Include="include\coment\utils\Functions.h" />
+    <ClInclude Include="include\coment\utils\Map.h" />
+    <ClInclude Include="include\coment\utils\SharedPtr.h" />
+    <ClInclude Include="include\coment\World.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Components\BoundsComponent.h" />
-    <ClInclude Include="Components\ColorComponent.h" />
-    <ClInclude Include="Components\PositionComponent.h" />
-    <ClInclude Include="Components\PreviousUpdatePositionComponent.h" />
-    <ClInclude Include="Components\VelocityComponent.h" />
-    <ClInclude Include="Managers\BallManager.h" />
-    <ClInclude Include="PongGame.h" />
-    <ClInclude Include="IGame.h" />
-    <ClInclude Include="Systems\CollisionSystem.h" />
-    <ClInclude Include="Systems\PositionStorageSystem.h" />
-    <ClInclude Include="Systems\MovementSystem.h" />
-    <ClInclude Include="Systems\RenderingSystem.h" />
-    <ClInclude Include="World.h" />
+    <ClCompile Include="src\Entity.cpp" />
+    <ClCompile Include="src\EntityInfo.cpp" />
+    <ClCompile Include="src\managers\ComponentManager.cpp" />
+    <ClCompile Include="src\managers\EntityManager.cpp" />
+    <ClCompile Include="src\managers\GroupManager.cpp" />
+    <ClCompile Include="src\managers\Manager.cpp" />
+    <ClCompile Include="src\managers\ManagerManager.cpp" />
+    <ClCompile Include="src\managers\SystemManager.cpp" />
+    <ClCompile Include="src\managers\TagManager.cpp" />
+    <ClCompile Include="src\systems\EntityProcessingSystem.cpp" />
+    <ClCompile Include="src\systems\EntitySystem.cpp" />
+    <ClCompile Include="src\World.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

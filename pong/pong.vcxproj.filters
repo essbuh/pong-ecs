@@ -13,6 +13,15 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\Managers">
+      <UniqueIdentifier>{6aa0501f-850c-46ec-b8f6-0badeb51b2c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components">
+      <UniqueIdentifier>{43d98af8-e10e-49a7-a300-3d9d9f73b8eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Systems">
+      <UniqueIdentifier>{cd6135f4-0ec0-41a9-9f66-747a4d1e1f69}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -21,28 +30,58 @@
     <ClCompile Include="PongGame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GameStateManager.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Systems\RenderingSystem.cpp">
+      <Filter>Source Files\Systems</Filter>
     </ClCompile>
-    <ClCompile Include="GameState.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Systems\MovementSystem.cpp">
+      <Filter>Source Files\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="Systems\CollisionSystem.cpp">
+      <Filter>Source Files\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="Systems\PositionStorageSystem.cpp">
+      <Filter>Source Files\Systems</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IGame.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="IGameStateManager.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GameState.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="PongGame.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="GameStateManager.h">
+    <ClInclude Include="World.h">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\PositionComponent.h">
+      <Filter>Source Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\BoundsComponent.h">
+      <Filter>Source Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\ColorComponent.h">
+      <Filter>Source Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Systems\RenderingSystem.h">
+      <Filter>Source Files\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Managers\BallManager.h">
+      <Filter>Source Files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\VelocityComponent.h">
+      <Filter>Source Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Systems\MovementSystem.h">
+      <Filter>Source Files\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Systems\CollisionSystem.h">
+      <Filter>Source Files\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Systems\PositionStorageSystem.h">
+      <Filter>Source Files\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\PreviousUpdatePositionComponent.h">
+      <Filter>Source Files\Components</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

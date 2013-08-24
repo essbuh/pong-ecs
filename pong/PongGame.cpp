@@ -2,100 +2,79 @@
 // Author: Andrew Orner <github@ssba.hey.nu>
 //-----------------------------------------------------------------------------
 #include "PongGame.h"
-#include "GameStateManager.h"
 #include <GLFW/glfw3.h>
 #include <stdlib.h>
+#include "coment/World.h"
+
+#include "Systems/RenderingSystem.h"
+#include "Systems/MovementSystem.h"
+#include "Systems/CollisionSystem.h"
+#include "Systems/PositionStorageSystem.h"
+
+#include "Managers/BallManager.h"
 
 extern GLFWwindow *s_Window;
 
 extern int BALL_WIDTH;
-extern int WINDOW_WIDTH;
-extern int WINDOW_HEIGHT;
+extern const int INITIAL_WINDOW_WIDTH;
+extern const int INITIAL_WINDOW_HEIGHT;
+
+//-----------------------------------------------------------------------------
+static RenderingSystem s_RenderingSystem;
+static CollisionSystem s_CollisionSystem;
+static PositionStorageSystem s_PositionStorageSystem;
+static MovementSystem s_MovementSystem;
+//-----------------------------------------------------------------------------
+static BallManager s_BallManager;
 
 //-----------------------------------------------------------------------------
 void PongGame::Init( void )
 {
-	_gameStateManager = new GameStateManager();
+	_world.setValue<int>("window_width", INITIAL_WINDOW_WIDTH);
+	_world.setValue<int>("window_height", INITIAL_WINDOW_HEIGHT);
 
-	GameState &state = _gameStateManager->GetCurrentState();
+	_world.registerSystem(s_RenderingSystem);
+	_world.registerSystem(s_CollisionSystem);
+	_world.registerSystem(s_MovementSystem);
+	_world.registerSystem(s_PositionStorageSystem);
 
-	do
-	{
-		state.dx = 2.f * (-1.f + (float) rand() / ((float) RAND_MAX / (2.f)));
-		state.dy = 2.f * (-1.f + (float) rand() / ((float) RAND_MAX / (2.f)));
-	} while (state.dx == 0.f && state.dy == 0.f);
+	_world.registerManager(s_BallManager);
+
+	s_BallManager.createBall();
 }
 
 //-----------------------------------------------------------------------------
 void PongGame::Shutdown( void )
 {
-	if ( _gameStateManager )
-	{
-		delete _gameStateManager;
-	}
 }
 
 //-----------------------------------------------------------------------------
-void PongGame::Update( void )
+void PongGame::Update( double dt )
 {
-	_gameStateManager->StoreCurrentState();
-	
-	GameState &state = _gameStateManager->GetCurrentState();
-	UpdateGameState( state );
+	_world.loopStart();
+	_world.setDelta( dt );
+
+	s_PositionStorageSystem.update();
+	s_MovementSystem.update();
+	s_CollisionSystem.update();
 }
 
 //-----------------------------------------------------------------------------
-void PongGame::UpdateGameState( GameState &state )
+void PongGame::Render( double frameInterpolation )
 {
-	state.x += state.dx;
-	state.y += state.dy;
+	_world.setValue<double>("frame_interpolation", frameInterpolation);
 
-	if (state.x < 0)
-	{
-		state.x = 0;
-		state.dx = -state.dx;
-	}
-	else if ((state.x + BALL_WIDTH) >= WINDOW_WIDTH)
-	{
-		state.x = WINDOW_WIDTH - BALL_WIDTH;
-		state.dx = -state.dx;
-	}
-
-	if (state.y < 0)
-	{
-		state.y = 0;
-		state.dy = -state.dy;
-	}
-	else if ((state.y + BALL_WIDTH) >= WINDOW_HEIGHT)
-	{
-		state.y = WINDOW_HEIGHT - BALL_WIDTH;
-		state.dy = -state.dy;
-	}
+	_world.getSystem<RenderingSystem>()->update();
 }
 
 //-----------------------------------------------------------------------------
-void PongGame::Render( float frameInterpolation )
+void PongGame::OnWindowSizeChanged( int newWidth, int newHeight )
 {
-	_gameStateManager->GetInterpolatedState( frameInterpolation, _renderState );
-	RenderGameState( _renderState );
-}
-
-//-----------------------------------------------------------------------------
-void PongGame::RenderGameState( const GameState &state )
-{
-	glClear(GL_COLOR_BUFFER_BIT);
-	glMatrixMode(GL_MODELVIEW);
+	glViewport(0, 0, newWidth, newHeight);
+	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	glTranslatef(state.x, state.y, 0.f);
+	glOrtho(0, newWidth, 0, newHeight, 1.f, -1.f);
 
-	glBegin(GL_TRIANGLE_STRIP);
-	glColor3f(1.f, 1.f, 1.f);
-	glVertex3f(0.f, 0.f, 0.f);
-	glVertex3f(BALL_WIDTH, 0.f, 0.f);
-	glVertex3f(BALL_WIDTH, BALL_WIDTH, 0.f);
-	glVertex3f(0.f, BALL_WIDTH, 0.f);
-	glVertex3f(0.f, 0.f, 0.f);
-	glEnd();
-
-	glfwSwapBuffers(s_Window);
+	_world.setValue<int>("window_width", newWidth);
+	_world.setValue<int>("window_height", newHeight);
 }

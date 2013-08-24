@@ -9,10 +9,16 @@
 
 #include "PongGame.h"
 
+// Thanks, Obama
+#ifdef _MSC_VER
+	#define snprintf_s _snprintf_s
+#endif
+
 GLFWwindow *s_Window = NULL;
+static IGame *s_Game = NULL;
 int BALL_WIDTH = 10;
-int WINDOW_WIDTH = 1600;
-int WINDOW_HEIGHT = 900;
+extern const int INITIAL_WINDOW_WIDTH = 1600;
+extern const int INITIAL_WINDOW_HEIGHT = 900;
 
 static void error_callback(int error, const char *description)
 {
@@ -27,13 +33,10 @@ static void key_callback(GLFWwindow *window, int key, int scancode, int action, 
 
 static void window_size_callback(GLFWwindow* window, int width, int height)
 {
-	WINDOW_WIDTH = width;
-	WINDOW_HEIGHT = height;
-
-	glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	glOrtho(0, WINDOW_WIDTH, 0, WINDOW_HEIGHT, 1.f, -1.f);
+	if ( s_Game )
+	{
+		s_Game->OnWindowSizeChanged( width, height );
+	}
 }
 
 bool Init(void)
@@ -42,7 +45,7 @@ bool Init(void)
 
 	if (!glfwInit()) return false;
 
-	s_Window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Pong", NULL, NULL);
+	s_Window = glfwCreateWindow(INITIAL_WINDOW_WIDTH, INITIAL_WINDOW_HEIGHT, "Pong", NULL, NULL);
 	if (!s_Window)
 	{
 		glfwTerminate();
@@ -53,13 +56,10 @@ bool Init(void)
 	glfwMakeContextCurrent(s_Window);
 	glfwSetKeyCallback(s_Window, key_callback);
 
-	// Call once now for initial display
-	window_size_callback(s_Window, WINDOW_WIDTH, WINDOW_HEIGHT);
-
 	return true;
 }
 
-float time()
+double time()
 {
 	static __int64 start = 0;
 	static __int64 frequency = 0;
@@ -73,7 +73,7 @@ float time()
 
 	__int64 counter = 0;
 	QueryPerformanceCounter((LARGE_INTEGER*) &counter);
-	return (float) ((counter - start) / double(frequency));
+	return (double) ((counter - start) / double(frequency));
 }
 
 int main(void)
@@ -85,21 +85,24 @@ int main(void)
 
 	srand((unsigned) time(0));
 
-	IGame *game = new PongGame();
-	game->Init();
+	s_Game = new PongGame();
+	s_Game->Init();
 
-	float currentTime = 0.0f;
-	float accumulator = 0.0f;
+	// Call once now for initial display
+	window_size_callback(s_Window, INITIAL_WINDOW_WIDTH, INITIAL_WINDOW_HEIGHT);
 
-	const float dt = 0.01f;
-	float t = 0.0f;
+	double currentTime = 0.0f;
+	double accumulator = 0.0f;
+
+	const double dt = 0.01f;
+	double t = 0.0f;
 	int frames = 0;
 
 	bool running = true;
 	while (running)
 	{
-		const float newTime = time();
-		float deltaTime = newTime - currentTime;
+		const double newTime = time();
+		double deltaTime = newTime - currentTime;
 		currentTime = newTime;
 
 		if (deltaTime > 0.25f)
@@ -110,18 +113,18 @@ int main(void)
 		while (accumulator >= dt)
 		{
 			accumulator -= dt;
-			game->Update();
+			s_Game->Update( dt );
 			t += dt;
 		}
 
-		game->Render( accumulator / dt );
+		s_Game->Render( accumulator / dt );
 		glfwPollEvents();
 
 		++frames;
 		running = running && !glfwWindowShouldClose(s_Window);
 	}
 
-	game->Shutdown();
+	s_Game->Shutdown();
 
 	glfwDestroyWindow(s_Window);
 	glfwTerminate();

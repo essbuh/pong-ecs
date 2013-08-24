@@ -5,23 +5,20 @@
 #define _PONGGAME_H_
 
 #include "IGame.h"
-#include "IGameStateManager.h"
+#include "coment/World.h"
 
 class PongGame : public IGame
 {
 public:
 	virtual void Init( void );
-	virtual void Update( void );
-	virtual void Render( float frameInterpolation );
+	virtual void Update( double dt );
+	virtual void Render( double frameInterpolation );
 	virtual void Shutdown( void );
 
-protected:
-	virtual void UpdateGameState( GameState &state );
-	virtual void RenderGameState( const GameState &state );
+	virtual void OnWindowSizeChanged( int newWidth, int newHeight );
 
 private:
-	GameState _renderState;
-	IGameStateManager *_gameStateManager;
+	coment::World _world;
 };
 
 #endif // _PONGGAME_H_

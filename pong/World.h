@@ -1,10 +1,20 @@
 //-----------------------------------------------------------------------------
 // Author: Andrew Orner <github@ssba.hey.nu>
 //-----------------------------------------------------------------------------
-#include "GameState.h"
+#if !defined( _WORLD_H_ )
+#define _WORLD_H_
 
-//-----------------------------------------------------------------------------
-GameState::GameState( void )
-	: x(0.f), y(0.f), dx(0.f), dy(0.f) 
+class Entity;
+
+class World
 {
-}
+public:
+	void Init( void );
+	void Update( void );
+
+	Entity CreateEntity();
+
+private:
+};
+
+#endif // _WORLD_H_

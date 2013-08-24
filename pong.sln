@@ -1,9 +1,12 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.20617.1 PREVIEW
-MinimumVisualStudioVersion = 10.0.40219.1
+# Visual Studio 2012
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pong", "pong\pong.vcxproj", "{5DD7BF52-1409-4CB9-B6FF-075D46348597}"
+	ProjectSection(ProjectDependencies) = postProject
+		{CCC7BFD3-C885-42B0-9E6E-BB3B9165C615} = {CCC7BFD3-C885-42B0-9E6E-BB3B9165C615}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "coment", "coment\coment.vcxproj", "{CCC7BFD3-C885-42B0-9E6E-BB3B9165C615}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +18,10 @@ Global
 		{5DD7BF52-1409-4CB9-B6FF-075D46348597}.Debug|Win32.Build.0 = Debug|Win32
 		{5DD7BF52-1409-4CB9-B6FF-075D46348597}.Release|Win32.ActiveCfg = Release|Win32
 		{5DD7BF52-1409-4CB9-B6FF-075D46348597}.Release|Win32.Build.0 = Release|Win32
+		{CCC7BFD3-C885-42B0-9E6E-BB3B9165C615}.Debug|Win32.ActiveCfg = Debug|Win32
+		{CCC7BFD3-C885-42B0-9E6E-BB3B9165C615}.Debug|Win32.Build.0 = Debug|Win32
+		{CCC7BFD3-C885-42B0-9E6E-BB3B9165C615}.Release|Win32.ActiveCfg = Release|Win32
+		{CCC7BFD3-C885-42B0-9E6E-BB3B9165C615}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

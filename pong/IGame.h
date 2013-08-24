@@ -8,9 +8,11 @@ class IGame
 {
 public:
 	virtual void Init( void ) = 0;
-	virtual void Update( void ) = 0;
-	virtual void Render( float frameInterpolation ) = 0;
+	virtual void Update( double dt ) = 0;
+	virtual void Render( double frameInterpolation ) = 0;
 	virtual void Shutdown( void ) = 0;
+
+	virtual void OnWindowSizeChanged( int newWidth, int newHeight ) = 0;
 };
 
 #endif // _IGAME_H_
