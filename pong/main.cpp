@@ -91,12 +91,13 @@ int main(void)
 	// Call once now for initial display
 	window_size_callback(s_Window, INITIAL_WINDOW_WIDTH, INITIAL_WINDOW_HEIGHT);
 
-	double currentTime = 0.0f;
-	double accumulator = 0.0f;
+	double currentTime = 0.0;
+	double accumulator = 0.0;
 
-	const double dt = 0.01f;
-	double t = 0.0f;
+	const double dt = 0.01;
+	double t = 0.0;
 	int frames = 0;
+	double lastFPStime = 0.0;
 
 	bool running = true;
 	while (running)
@@ -121,6 +122,16 @@ int main(void)
 		glfwPollEvents();
 
 		++frames;
+		if (t - lastFPStime > 1.f)
+		{
+			const int titleBufferLen = 256;
+			char titleBuffer[titleBufferLen];
+			_snprintf_s(titleBuffer, titleBufferLen, "Pong | FPS: %d", frames);
+
+			frames = 0;
+			lastFPStime = t;
+			glfwSetWindowTitle( s_Window, titleBuffer );
+		}
 		running = running && !glfwWindowShouldClose(s_Window);
 	}
 

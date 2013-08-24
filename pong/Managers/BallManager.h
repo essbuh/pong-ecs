@@ -14,8 +14,9 @@
 #include "Components/PreviousUpdatePositionComponent.h"
 
 //-----------------------------------------------------------------------------
-static int MAX_BALL_VELOCITY = 300;
-static int MIN_BALL_VELOCITY = -300;
+static int MAX_BALL_VELOCITY = 200;
+static int MIN_BALL_VELOCITY = -200;
+static float INITIAL_BALL_SIZE = 50.f;
 
 //-----------------------------------------------------------------------------
 class BallManager : public coment::Manager
@@ -38,8 +39,8 @@ public:
 		lastPosition->y = position->y;
 
 		BoundsComponent *bounds = _world->addComponent<BoundsComponent>(e);
-		bounds->width = 50.f;
-		bounds->height = 50.f;
+		bounds->width = INITIAL_BALL_SIZE;
+		bounds->height = INITIAL_BALL_SIZE;
 
 		ColorComponent *color = _world->addComponent<ColorComponent>(e);
 		color->r = rand() % 255;
@@ -51,7 +52,7 @@ public:
 		{
 			velocity->x = rand() % (MAX_BALL_VELOCITY - MIN_BALL_VELOCITY) + MIN_BALL_VELOCITY;
 			velocity->y = rand() % (MAX_BALL_VELOCITY - MIN_BALL_VELOCITY) + MIN_BALL_VELOCITY;
-		} while (velocity->x == 0 || velocity->y == 0);
+		} while (abs(velocity->x) < 100.f || abs(velocity->y) < 100.f);
 	}
 };
 
