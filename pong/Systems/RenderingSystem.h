@@ -16,6 +16,8 @@ public:
 	virtual void onBegin( void );
 	virtual void onEnd( void );
 
+	void OnWindowSizeChanged( int newWidth, int newHeight );
+
 private:
 	float interpolate( float a, float b, double alpha ) const;
 };

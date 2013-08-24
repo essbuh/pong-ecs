@@ -2,7 +2,6 @@
 // Author: Andrew Orner <github@ssba.hey.nu>
 //-----------------------------------------------------------------------------
 #include "PongGame.h"
-#include <GLFW/glfw3.h>
 #include <stdlib.h>
 #include "coment/World.h"
 
@@ -12,8 +11,6 @@
 #include "Systems/PositionStorageSystem.h"
 
 #include "Managers/BallManager.h"
-
-extern GLFWwindow *s_Window;
 
 extern int BALL_WIDTH;
 extern const int INITIAL_WINDOW_WIDTH;
@@ -70,11 +67,8 @@ void PongGame::Render( double frameInterpolation )
 //-----------------------------------------------------------------------------
 void PongGame::OnWindowSizeChanged( int newWidth, int newHeight )
 {
-	glViewport(0, 0, newWidth, newHeight);
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	glOrtho(0, newWidth, 0, newHeight, 1.f, -1.f);
-
 	_world.setValue<int>("window_width", newWidth);
 	_world.setValue<int>("window_height", newHeight);
+
+	_world.getSystem<RenderingSystem>()->OnWindowSizeChanged( newWidth, newHeight );
 }

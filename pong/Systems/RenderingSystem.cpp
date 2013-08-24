@@ -62,3 +62,12 @@ float RenderingSystem::interpolate( float a, float b, double alpha ) const
 {
 	return a * (1.0 - alpha) + b * alpha;
 }
+
+//-----------------------------------------------------------------------------
+void RenderingSystem::OnWindowSizeChanged( int newWidth, int newHeight )
+{
+	glViewport(0, 0, newWidth, newHeight);
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	glOrtho(0, newWidth, 0, newHeight, 1.f, -1.f);
+}
