@@ -16,6 +16,8 @@ public:
 	virtual void Shutdown( void );
 
 	virtual void OnWindowSizeChanged( int newWidth, int newHeight );
+	virtual void OnKeyPressed( int key );
+	virtual void OnKeyReleased( int key );
 
 private:
 	coment::World _world;

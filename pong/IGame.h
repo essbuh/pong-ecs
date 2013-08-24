@@ -13,6 +13,8 @@ public:
 	virtual void Shutdown( void ) = 0;
 
 	virtual void OnWindowSizeChanged( int newWidth, int newHeight ) = 0;
+	virtual void OnKeyPressed( int key ) = 0;
+	virtual void OnKeyReleased( int key ) = 0;
 };
 
 #endif // _IGAME_H_

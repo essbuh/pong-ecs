@@ -29,6 +29,11 @@ static void key_callback(GLFWwindow *window, int key, int scancode, int action, 
 {
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, GL_TRUE);
+	else if (action == GLFW_PRESS && s_Game) {
+		s_Game->OnKeyPressed(key);
+	} else if (action == GLFW_RELEASE && s_Game) {
+		s_Game->OnKeyReleased(key);
+	}
 }
 
 static void window_size_callback(GLFWwindow* window, int width, int height)

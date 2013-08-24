@@ -77,6 +77,8 @@
     <ClCompile Include="PongGame.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Systems\CollisionSystem.cpp" />
+    <ClCompile Include="Systems\ControlMovementSystem.cpp" />
+    <ClCompile Include="Systems\InputSystem.cpp" />
     <ClCompile Include="Systems\MovementSystem.cpp" />
     <ClCompile Include="Systems\PositionStorageSystem.cpp" />
     <ClCompile Include="Systems\RenderingSystem.cpp" />
@@ -84,13 +86,18 @@
   <ItemGroup>
     <ClInclude Include="Components\BoundsComponent.h" />
     <ClInclude Include="Components\ColorComponent.h" />
+    <ClInclude Include="Components\ControlComponent.h" />
+    <ClInclude Include="Components\KeyBindingComponent.h" />
     <ClInclude Include="Components\PositionComponent.h" />
     <ClInclude Include="Components\PreviousUpdatePositionComponent.h" />
     <ClInclude Include="Components\VelocityComponent.h" />
     <ClInclude Include="Managers\BallManager.h" />
+    <ClInclude Include="Managers\PaddleManager.h" />
     <ClInclude Include="PongGame.h" />
     <ClInclude Include="IGame.h" />
     <ClInclude Include="Systems\CollisionSystem.h" />
+    <ClInclude Include="Systems\ControlMovementSystem.h" />
+    <ClInclude Include="Systems\InputSystem.h" />
     <ClInclude Include="Systems\PositionStorageSystem.h" />
     <ClInclude Include="Systems\MovementSystem.h" />
     <ClInclude Include="Systems\RenderingSystem.h" />
